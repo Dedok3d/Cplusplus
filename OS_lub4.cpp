@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <malloc.h>
-#include<iostream>
+#include<string.h>
 class ListItem {
 	public:
 		char* line;
@@ -12,12 +12,12 @@ class ListItem {
 			int n = strlen(arr)+1;
 			int i = 0;
 			line = (char*)malloc(n*sizeof(char));
-			/*for (i = 0; i < strlen(arr); i++)
+			for (i = 0; i < strlen(arr); i++)
 			{
 				line[i] = arr[i];
 			}
-			line[i] = '\0';*/
-			memcpy(line, arr, strlen(arr)+1);
+			line[i] = '\0';
+			//memcpy(line, arr, strlen(arr)+1);
 			next = nullptr;
 		}
 
@@ -74,11 +74,11 @@ int main(int argc, char *argv[])
 {
 	
 	char buffer[1000] = "";
-	gets_s(buffer);
+	gets(buffer);
 	ListContain list(buffer);
 	while (buffer[0] != '.')
 	{
-		gets_s(buffer);
+		gets(buffer);
 		list.addList(buffer);
 	}
 	list.print();
