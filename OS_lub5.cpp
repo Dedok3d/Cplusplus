@@ -47,19 +47,17 @@ int main(int argc, char *argv[])
         return 0;
     }
     char buff[1024];
-    //char buff1[1024];
     memset(buff, 0, 1024);
-    //memset(buff1, 0, 1024);
-   // lseek(input_file,7,0);
     while(read(input_file, buff, 1)) {
-        std::cout << buff;
         n++;
         if(buff[0]=='\n') {
             arr.insert(arr.end(),Str(s,(n-s-1)));
+            memset(buff, 0, 1024);
             s = n;
         }
     }
     memset(buff, 0, 1024);
+    std::cout << "Enter number of string from 1 for " << arr.size() << ": ";
     std::cin >> n;
     if(n<0 || n>arr.size()){
         std::cout << "We are sorry, but this line doesn't exist" << std::endl;
