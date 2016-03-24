@@ -59,6 +59,9 @@ int main(int argc, char *argv[])
     memset(buff, 0, 1024);
     std::cout << "Enter number of string from 1 for " << arr.size() << ": ";
     std::cin >> n;
+    if(n == 0){
+        std::cout << "The end." << std::endl;
+    }
     if(n<0 || n>arr.size()){
         std::cout << "We are sorry, but this line doesn't exist" << std::endl;
         return 0;
