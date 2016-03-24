@@ -3,8 +3,8 @@
 double findMax(std::vector<double> a) {
 	double tmp = a[0];
 	for (int i = 0; i < a.size(); i++) {
-		if ((a[i]>tmp) || ((a[i]*(-1))>tmp)) {
-			tmp = a[i];
+		if ((abs(a[i])>tmp)) {
+			tmp = abs(a[i]);
 		}
 	}
 	return abs(tmp);
@@ -20,32 +20,26 @@ void swapString(std::vector<double>* a, std::vector<double>* b) {
 }
 
 double funcXn(const std::vector<double> a, std::vector<double> x, double n) {
-	double tmp = a[(a.size() - 1)];
+	double tmp = 0;
 	for (int i = 0; i < (a.size() - 1); i++) {
-		if (i != n) {
-		tmp = tmp - (a[i] * x[i]);
-		}
+		tmp = tmp + (a[i] * x[i]);
 	}
-	if (tmp != 0) {
-		tmp = tmp / (a[n]);
-	}
-	else {
-		tmp = 0;
-	}
+	tmp = tmp - (a[(a.size()-1)]);
+	
 	
 	return tmp;
 }
 
 void diff(std::vector<double>* difference, std::vector<double> newX, std::vector<double> oldX) {
-	for (int t = 0; t < (*difference).size(); t++) {
-		(*difference)[t] = oldX[t] - newX[t];
+	for (int t = 0; t < newX.size(); t++) {
+		(*difference)[t] = abs(oldX[t] - newX[t]);
 	}
 }
 
 int main() {
 	int n;
-	int count = 0;
-	double E = 0.1;
+	double count = 0;
+	double E = 0.05;
 	std::vector<std::vector<double>> a;
 	std::vector<double> oldX;
 	std::vector<double> newX;
@@ -57,7 +51,7 @@ int main() {
 	newX.resize(n);
 	difference.resize(n);
 	for (int i = 0; i < n; i++) {
-		newX[i] = 0;
+		newX[i] = 2;
 		oldX[i] = 0;
 	}
 	for (int i = 0; i < n; i++) {
@@ -69,14 +63,17 @@ int main() {
 	while (true) {
 		swapString(&newX, &oldX);
 		for (int i = 0; i < oldX.size(); i++) {
-			newX[i] = funcXn(a[i], oldX, i);
+			
+			newX[i] = (oldX[i] - ((funcXn(a[i], oldX, i))*(-0.01)));
 			std::cout << newX[i] << " ";
 		}
 		diff(&difference, newX, oldX);
-		if (findMax(difference) < E) {
+		count = findMax(difference);
+		if (count < E) {
+			
 			break;
 		}
-		count++;
+		std::cout << count << std::endl;
 		std::cout << std::endl;
 		
 	}
