@@ -10,19 +10,20 @@ int main()
   int rv;
   switch(pid=fork()) {
      case -1:
-        perror("fork"); /* произошла ошибка */
-        exit(1); /*выход из родительского процесса*/
+        perror("fork"); /* error */
+        exit(1); /*exit*/
      case 0:
-        printf(" CHILD: Это процесс-потомок!\n");
+        printf(" CHILD: This is the child process!\n");
         execl("/bin/cat", "cat", "in.txt", (char *)NULL);
      default:
-        printf("PARENT: Это процесс-родитель!\n");
-        printf("PARENT: Мой PID -- %d\n", getpid());
-        printf("PARENT: PID моего потомка %d\n",pid);
-        printf("PARENT: Я жду, пока потомок не вызовет exit()...\n");
+        printf("PARENT: This is the parent process!\n");
+        printf("PARENT: my PID -- %d\n", getpid());
+        printf("PARENT: My child PID %d\n",pid);
+        printf("PARENT: I wait? while my child don't call exit()...\n");
         wait(&rv);
-        printf("PARENT: Код возврата потомка:%d\n", WEXITSTATUS(rv));
-        printf("PARENT: Выход!\n");
+        printf("PARENT: Child retern code:%d\n", WEXITSTATUS(rv));
+        printf("PARENT: Exit!\n");
   }
+  return 0;
 }
 
