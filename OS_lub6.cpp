@@ -80,23 +80,32 @@ int main(int argc, char *argv[])
             s = n;
         }
     }
+    while(n!=0){
     memset(buff, 0, 1024);
     signal(SIGALRM, ALARMhandler);
     std::cout << "Enter number of string from 1 for " << arr.size() << "(you have 5 sec): ";
     alarm(5);
    if(scanf("%d", &n)!=EOF)
    {
-
+        if(n<0 || n> arr.size()){
+            std::cout << "we are sorry" << std::endl;
+            return 0;
+        }
+        if(n == 0){
+            std::cout << "the end" << std::endl;
+            return 0;
+        }
        lseek(input_file,arr[n-1].GetPos(),0);
        for(int i=0; i< arr[n-1].GetNum(); i++) {
            read(input_file, buff, 1);
            std::cout << buff;
        }
        std::cout << std::endl;
-       close(input_file);
-       return 0;
+       
    }
-
+}
     close(input_file);
-    return 0;
+        return 0;
+    
+
 }
