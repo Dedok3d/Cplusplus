@@ -56,22 +56,25 @@ int main(int argc, char *argv[])
             s = n;
         }
     }
-    memset(buff, 0, 1024);
-    std::cout << "Enter number of string from 1 for " << arr.size() << ": ";
-    std::cin >> n;
-    if(n == 0){
-        std::cout << "The end." << std::endl;
+    while(n!=0){
+        memset(buff, 0, 1024);
+        std::cout << "Enter number of string from 1 for " << arr.size() << ": ";
+        std::cin >> n;
+        if(n == 0){
+            std::cout << "The end." << std::endl;
+            break;
+        }
+        if(n<0 || n>arr.size()){
+            std::cout << "We are sorry, but this line doesn't exist" << std::endl;
+            return 0;
+        }
+        lseek(input_file,arr[n-1].GetPos(),0);
+        for(int i=0; i< arr[n-1].GetNum(); i++) {
+            read(input_file, buff, 1);
+            std::cout << buff;
+        }
+        std::cout << std::endl;
     }
-    if(n<0 || n>arr.size()){
-        std::cout << "We are sorry, but this line doesn't exist" << std::endl;
-        return 0;
-    }
-    lseek(input_file,arr[n-1].GetPos(),0);
-    for(int i=0; i< arr[n-1].GetNum(); i++) {
-        read(input_file, buff, 1);
-        std::cout << buff;
-    }
-    std::cout << std::endl;
     close(input_file);
     return 0;
 }
