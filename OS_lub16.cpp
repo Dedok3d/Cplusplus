@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <termios.h>
-
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 static struct termios stored_settings;
 
 void set_keypress(void)
@@ -39,6 +41,8 @@ int main(void)
   printf(" \n");
   if((n!='y') && (n!='n')){
      printf("No correct symbol!\n");
+     reset_keypress();
+     return 0;
   }
      printf("Oh, really?\n");
   reset_keypress();
