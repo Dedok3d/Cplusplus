@@ -9,13 +9,13 @@ int main()
   pid_t pid;
   int rv;
   switch(pid=fork()) {
-     case -1:
+     case -1: /{*}при вызове fork() возникла ошибка{*}/
         perror("fork"); /* error */
         exit(1); /*exit*/
-     case 0:
+     case 0: /{*}это код потомка{*}/
         printf(" CHILD: This is the child process!\n");
         execl("/bin/cat", "cat", "in.txt", (char *)NULL);
-     default:
+     default: /{*}это код родительского процесса{*}/
         printf("PARENT: This is the parent process!\n");
         printf("PARENT: my PID -- %d\n", getpid());
         printf("PARENT: My child PID %d\n",pid);
