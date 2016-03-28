@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 int main()
 {
-  pid_t pid;
+  pid_t pid; /*уникальный внутри системы номер, который называется PID (аббревиатура от process identifier)*/
   int rv;
   switch(pid=fork()) {
      case -1: /{*}при вызове fork() возникла ошибка{*}/
