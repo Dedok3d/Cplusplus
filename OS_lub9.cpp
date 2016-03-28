@@ -20,7 +20,7 @@ int main()
         printf("PARENT: my PID -- %d\n", getpid());
         printf("PARENT: My child PID %d\n",pid);
         printf("PARENT: I wait? while my child don't call exit()...\n");
-        wait(&rv);
+        wait(&rv); /*Ожидание потомка*/
         printf("PARENT: Child retern code:%d\n", WEXITSTATUS(rv));
         printf("PARENT: Exit!\n");
   }
