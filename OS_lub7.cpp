@@ -45,23 +45,20 @@ void FindLine(std::vector<Str>* arr) {
 	int s = 0;
 	for (int j = 0; j < size; j++)
 	{
-    	if (map[j] == '\n') {
-        	(*arr).insert((*arr).end(), Str(s, (j - s - 1)));
-        	s = j;
-    	}
+    		if (map[j] == '\n') {
+        		(*arr).insert((*arr).end(), Str(s, (j - s)));
+        		s = j;
+    		}
 	}
 }
 
 void FromFileToMem(int input_file) {
-
-    
 	//PROT_READ pages may be read
 	if ((map = (char*)mmap(0, lseek(input_file, 0, SEEK_END), PROT_READ, MAP_SHARED, input_file, 0)) == MAP_FAILED)
 	{
     	printf("Error mapping file.\n");
     	exit(1);
 	}
-    //return lseek(input_file, 0, SEEK_END);
 }
 
 void printFile() {
@@ -97,7 +94,6 @@ int Process(std::vector<Str> arr) {
     for (int i = arr[n - 1].GetPos(); i < (arr[n - 1].GetPos()+arr[n - 1].GetNum()); i++) {
         	std::cout << map[i];
     	}
-    	std::cout << std::endl;
 	}
 	return n;
 }
