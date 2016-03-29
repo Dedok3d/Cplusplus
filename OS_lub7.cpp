@@ -121,7 +121,6 @@ int main(int argc, char* argv[])
     	std::cout << "Enter number of string from 1 for " << arr.size() << " (you have 5 sec): ";
     	alarm(5);
     	n = Process(arr);
-    break;
 	}
 	close(input_file);
 	return 0;
