@@ -7,8 +7,8 @@
 #include <iostream>
 #include <fcntl.h>
 
-char *map;
-int size = 0;
+
+int n = -1;
 
 class Str {
 	int startPos;
@@ -41,7 +41,7 @@ public:
 	}
 };
 
-void FindLine(std::vector<Str>* arr) {
+void FindLine(std::vector<Str>* arr, char *map) {
 	int s = 0;
 	for (int j = 0; j < size; j++)
 	{
@@ -52,7 +52,7 @@ void FindLine(std::vector<Str>* arr) {
 	}
 }
 
-void FromFileToMem(int input_file) {
+void FromFileToMem(int input_file, char *map) {
 	//PROT_READ pages may be read
 	if ((map = (char*)mmap(0, lseek(input_file, 0, SEEK_END), PROT_READ, MAP_SHARED, input_file, 0)) == MAP_FAILED)
 	{
@@ -61,7 +61,7 @@ void FromFileToMem(int input_file) {
 	}
 }
 
-void printFile() {
+void printFile(char *map) {
 
 	std::cout << std::endl;
 	for (int j = 0; j < size; j++)
@@ -74,9 +74,10 @@ void printFile() {
 void  ALARMhandler(int sig)
 {
 	signal(SIGALRM, SIG_IGN);      	/* ignore this signal   	*/
-	printFile();
+	//printFile(char *map);
+	n = 0;
 	signal(SIGALRM, ALARMhandler); 	/* reinstall the handler	*/
-	exit(1);
+	//exit(1);
 }
 
 int Process(std::vector<Str> arr) {
@@ -101,24 +102,23 @@ int Process(std::vector<Str> arr) {
 int main(int argc, char* argv[])
 {
 	std::vector<Str> arr;
+	char *map;
 	int s = 0;
 	int input_file;
-	int n = -1;
 	if ((input_file = open("in.txt", O_RDONLY)) == (-1))
 	{
-    	printf("failed to open");
-    	exit(1);
+    		printf("failed to open");
+    		exit(1);
 	}
-	size = lseek(input_file, 0, SEEK_END);
-	FromFileToMem( input_file);
-	FindLine( &arr);
+	FromFileToMem( input_file, map);
+	FindLine( &arr, map);
 	while (n != 0) {
-    	signal(SIGALRM, ALARMhandler);
-    	std::cout << "Enter number of string from 1 for " << arr.size() << " (you have 5 sec): ";
-    	alarm(5);
-    	n = Process(arr);
+    		signal(SIGALRM, ALARMhandler);
+    		std::cout << "Enter number of string from 1 for " << arr.size() << " (you have 5 sec): ";
+    		alarm(5);
+    		n = Process(arr);
 	}
+	printFile(char *map);
 	close(input_file);
 	return 0;
-
 }
