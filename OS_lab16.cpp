@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 
 	if (argc < 2)
 	{
-		printf("It's error, please use like ./a.out [command_name] [parametrs]");
+		printf("%s","It's error, please use like ./a.out [command_name] [parametrs]");
 		exit(-1);
 	}
 
