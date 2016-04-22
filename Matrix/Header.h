@@ -1,22 +1,36 @@
 #pragma once
 #include<iostream>
-#include<vector>
+//using std::istream;
 
 class Matrix {
 public:
-	std::vector<std::vector<double>> mat;
-	
-	Matrix(int size�olumn, int sizeString) {
-		SetSize(size�olumn, sizeString);
+	double **mat;
+	int sizeСolumn, sizeString;
+
+	/*t_... - temporary variable*/
+	Matrix(int t_sizeСolumn, int t_sizeString) {
+		mat = nullptr;
+		SetSize(t_sizeСolumn, t_sizeString);
 	}
+	int GetSizeСolumn();
+	int GetSizeString();
+	void SetSizeСolumn(int size);
+	void SetSizeString(int size);
 	void SetSize();
-	void SetSize(int size�olumn, int sizeString);
-	void SetMatrix();	
-	void Print();
+	void SetSize(int t_sizeСolumn, int t_sizeString);
 	void inversion();
-	Matrix* operator*(const Matrix& right);
-	Matrix* operator+(const Matrix& right);
-	Matrix* operator-(const Matrix& right);
+	/*перезагрузка должна быть дружественной, т.к. используеться класс iostream и пользовательский*/
+	friend std::istream& operator>>(std::istream &in, Matrix &A);
+	friend std::ostream& operator<<(std::ostream &out, Matrix &A);
+	Matrix* operator*(Matrix& right);
+	Matrix* operator+(Matrix& right);
+	Matrix* operator-(Matrix& right);
+	~Matrix() {
+		for (int i = 0; i < GetSizeСolumn(); i++) {
+			delete [] mat[i];
+		}
+		delete[] mat;
+	}
 };
 
 void DoIt();
