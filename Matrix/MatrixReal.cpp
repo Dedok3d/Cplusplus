@@ -1,49 +1,54 @@
 #include"Header.h"
 
+int Matrix::GetSize小olumn()
+{
+	return size小olumn;
+}
+
+int Matrix::GetSizeString()
+{
+	return sizeString;
+}
+
+void Matrix::SetSize小olumn(int size)
+{
+	size小olumn = size;
+}
+
+void Matrix::SetSizeString(int size)
+{
+	sizeString = size;
+}
+
 void Matrix::SetSize() {
-	int size裲lumn, sizeString;
+	int t_size小olumn, t_sizeString;
 	std::cout << "please enter column's size" << std::endl;
-	std::cin >> size裲lumn;
-	mat.resize(size裲lumn);
+	std::cin >> t_size小olumn;
+	SetSize小olumn(t_size小olumn);
+	mat = new double*[size小olumn];
 	std::cout << "please enter string's size" << std::endl;
-	std::cin >> sizeString;
-	for (int i = 0; i < mat.size(); i++) 
+	std::cin >> t_sizeString;
+	SetSizeString(t_sizeString);
+	for (int i = 0; i < t_size小olumn; i++)
 	{
-		mat[i].resize(sizeString);
+		mat[i] = new double[t_sizeString];
 	}
 }
 
-void Matrix::SetSize(int size裲lumn, int sizeString)
+void Matrix::SetSize(int t_size小olumn, int t_sizeString)
 {
-	mat.resize(size裲lumn);
-	for (int i = 0; i < mat.size(); i++) {
-		mat[i].resize(sizeString);
+	SetSize小olumn(t_size小olumn);
+	SetSizeString(t_sizeString);
+	mat = new double*[t_size小olumn];
+	for (int i = 0; i < t_size小olumn; i++) {
+		mat[i] = new double[t_sizeString];
 	}
 }
 
-void Matrix::SetMatrix() {
-	std::cout << "Please fill in the matrix:" << std::endl;
-	for (int i = 0; i < mat.size(); i++) {
-		for (int j = 0; j < mat[0].size(); j++) {
-			std::cin >> mat[i][j];
-		}
-	}
-}
-
-void Matrix::Print()
-{
-	std::cout << std::endl;
-	for (int i = 0; i < mat.size(); i++) {
-		for (int j = 0; j < mat[0].size(); j++) {
-			std::cout << mat[i][j] << " ";
-		}
-		std::cout << std::endl;
-	}
-}
 
 void Matrix::inversion()
 {
-	int N = mat.size();
+	int N = GetSize小olumn();
 	double temp;
 
 	double **E = new double *[N];
@@ -106,20 +111,20 @@ void Matrix::inversion()
 	delete[] E;
 }
 
-Matrix * Matrix::operator*(const Matrix & right)
+Matrix * Matrix::operator*( Matrix & right) 
 {
 	
-	if (mat[0].size() != right.mat.size()) {
-		std::cout << "Left matrix's string's size != right matrix's string's size" << std::endl;
+	if (this->GetSizeString() != right.GetSize小olumn()) {
+		std::cout << "Left matrix's string's size != right matrix's column's size" << std::endl;
 		system("pause");
-		exit(1);
+		return nullptr;
 	}
-	Matrix* C = new Matrix(mat.size(), mat[0].size());
-	int sum;
-	for (int i = 0; i < mat.size(); ++i) {
-		for (int j = 0; j < mat[0].size(); ++j) {
+	Matrix* C = new Matrix(this->GetSize小olumn(),this->GetSizeString());
+	double sum;
+	for (int i = 0; i < this->GetSize小olumn(); ++i) {
+		for (int j = 0; j < this->GetSizeString(); ++j) {
 			sum = 0;
-			for (int k = 0; k < right.mat.size(); ++k)
+			for (int k = 0; k < right.size小olumn; ++k)
 				sum += mat[i][k] * right.mat[k][j];
 			C->mat[i][j] = sum;
 		}
@@ -127,36 +132,59 @@ Matrix * Matrix::operator*(const Matrix & right)
 	return C;
 }
 
-Matrix * Matrix::operator+(const Matrix & right)
+Matrix * Matrix::operator+(Matrix & right)
 {
-	if (mat[0].size() != right.mat[0].size() || mat.size()!= right.mat.size()) {
+	if (this->GetSizeString() != right.GetSizeString() || this->GetSize小olumn()!= right.GetSize小olumn()){
 		std::cout << "Left matrix's string's size != right matrix's string's size" << std::endl;
 		system("pause");
-		exit(1);
+		return nullptr;
 	}
-	Matrix* C = new Matrix(mat.size(), mat[0].size());
-	for (int i = 0; i < mat.size(); ++i){
-		for (int j = 0; j < mat[0].size(); ++j) {
+	Matrix* C = new Matrix(this->GetSize小olumn(), this->GetSizeString());
+	for (int i = 0; i < this->GetSize小olumn(); ++i){
+		for (int j = 0; j < this->GetSizeString(); ++j) {
 			C->mat[i][j] = this->mat[i][j] + right.mat[i][j];
 		}
 	}
 	return C;
 }
 
-Matrix * Matrix::operator-(const Matrix & right)
+Matrix * Matrix::operator-(Matrix & right)
 {
-	if (mat[0].size() != right.mat[0].size() || mat.size() != right.mat.size()) {
+	if (this->GetSizeString() != right.GetSizeString() || this->GetSize小olumn() != right.GetSize小olumn()) {
 		std::cout << "Left matrix's string's size != right matrix's string's size" << std::endl;
 		system("pause");
-		exit(1);
+		return nullptr;
 	}
-	Matrix* C = new Matrix(mat.size(), mat[0].size());
-	for (int i = 0; i < mat.size(); ++i) {
-		for (int j = 0; j < mat[0].size(); ++j) {
+	Matrix* C = new Matrix(this->GetSize小olumn(), this->GetSizeString());
+	for (int i = 0; i < this->GetSize小olumn(); ++i) {
+		for (int j = 0; j < this->GetSizeString(); ++j) {
 			C->mat[i][j] = this->mat[i][j] - right.mat[i][j];
 		}
 	}
 	return C;
+}
+
+std::istream & operator>>(std::istream & in, Matrix & A)
+{
+	std::cout << "Please fill in the matrix:" << std::endl;
+	for (int i = 0; i < A.GetSize小olumn(); i++) {
+		for (int j = 0; j < A.GetSizeString(); j++) {
+			in >> A.mat[i][j];
+		}
+	}
+	return in;
+}
+
+std::ostream & operator<<(std::ostream & out, Matrix & A)
+{
+	out << std::endl;
+	for (int i = 0; i < A.GetSize小olumn(); i++) {
+		for (int j = 0; j < A.GetSizeString(); j++) {
+			out << A.mat[i][j] << " ";
+		}
+		out << std::endl;
+	}
+	return out;
 }
 
 void DoIt() {
@@ -189,48 +217,49 @@ void DoIt() {
 			break;
 		}
 	}
+	system("cls");
 }
 
 void findInversion() {
 	Matrix a(1, 1);
 	a.SetSize();
-	a.SetMatrix();
+	std::cin >> a;
 	a.inversion();
-	a.Print();
+	std::cout << a;
 }
 
 void findMultiplication() {
 	Matrix a(1, 1), b(1,1);
 	std::cout << "Matrix A:" << std::endl;
 	a.SetSize();
-	a.SetMatrix();
+	std::cin >> a;
 	std::cout << "Matrix B:" << std::endl;
 	b.SetSize();
-	b.SetMatrix();
+	std::cin >> b;
 	std::cout << "A*B" << std::endl;
-	(a*b)->Print();
+	std::cout << *(a*b);
 }
 
 void findSum() {
 	Matrix a(1, 1), b(1, 1);
 	std::cout << "Matrix A:" << std::endl;
 	a.SetSize();
-	a.SetMatrix();
+	std::cin >> a;
 	std::cout << "Matrix B:" << std::endl;
 	b.SetSize();
-	b.SetMatrix();
+	std::cin >> b;
 	std::cout << "A+B" << std::endl;
-	(a+b)->Print();
+	std::cout << *(a+b);
 }
 
 void findDifference() {
 	Matrix a(1, 1), b(1, 1);
 	std::cout << "Matrix A:" << std::endl;
 	a.SetSize();
-	a.SetMatrix();
+	std::cin >> a;
 	std::cout << "Matrix B:" << std::endl;
 	b.SetSize();
-	b.SetMatrix();
+	std::cin >> b;
 	std::cout << "A-B" << std::endl;
-	(a-b)->Print();
+	std::cout << *(a-b);
 }
