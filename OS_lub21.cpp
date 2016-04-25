@@ -3,10 +3,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-const int DeleteCode = 063;
-int bell_count = 0;
 static struct termios stored_settings;
-
+int count;
 void set_keypress(void)
 {
   struct termios new_settings;
@@ -15,8 +13,7 @@ void set_keypress(void)
 
   new_settings = stored_settings;
   new_settings.c_lflag &= (~ICANON & ~ECHO);
-  new_settings.c_cc[VTIME] = 0;
-  new_settings.c_cc[VMIN] = 1;
+  newsettings.c_cc[VINTR] = 27;
 
   tcsetattr(0,TCSANOW,&new_settings);
   return;
@@ -27,23 +24,25 @@ void reset_keypress(void)
   tcsetattr(0,TCSANOW,&stored_settings);
   return;
 }
+
+void sigcatch(int sig)
+{
+	if(sig==SIGQUIT)
+	{
+		printf("Count = %d\n",count);
+		reset_keypress();
+		exit(0);
+	}
+	printf("\a");
+	++count;
+}
+
 int main(void)
 {
   set_keypress();
-   char n;
-  printf("You're here?  ");
 while(1){
-   n = putchar(getchar());
-  printf(" \n");
-  if(n == DeleteCode){
-        printf( "\a");
-            bell_count++;
- }
- if(n == EOF){
-        printf("Oh, really?\n");
-        reset_keypress();
-        break;
- }
+  signal(SIGINT,sigcatch);
+	signal(SIGQUIT,sigcatch);
 }
   reset_keypress();
   return 0;
