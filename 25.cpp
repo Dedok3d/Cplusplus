@@ -4,24 +4,45 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-int main()
-{
-  pid_t pid; /*уникальный внутри системы номер, который называется PID (аббревиатура от process identifier)*/
+#include<ctype.h>
+#include <string.h>
+#define SIZE 100
+int main(int argc, char* argv[]) {
+  pid_t pid;
   int rv;
-  switch(pid=fork()) {
-     case -1: /{*}при вызове fork() возникла ошибка{*}/
-        perror("fork"); /* error */
-        exit(1); /*exit*/
-     case 0: /{*}это код потомка{*}/
-        printf(" CHILD: This is the child process!\n");
-        execl("/bin/cat", "cat", "in.txt", (char *)NULL);
-     default: /{*}это код родительского процесса{*}/
-        printf("PARENT: This is the parent process!\n");
-        printf("PARENT: my PID -- %d\n", getpid());
-        printf("PARENT: My child PID %d\n",pid);
-        printf("PARENT: I wait? while my child don't call exit()...\n");
-        wait(&rv); /*Ожидание потомка*/
-        printf("PARENT: Exit!\n");
+  int fd[2];
+  char buffer[SIZE] = "fghsdk F hgkddDFFhgdfgk shdgshd";
+  char chars[SIZE];
+        if(-1 == pipe(fd))
+        {
+                perror("pipe");
+                exit(1);
+        }
+ if( !fork() )
+  {
+        write(fd[1],buffer,SIZE-1);
+                    if(-1 == close(fd[1]))
+                    {
+                            perror("close");
+                            exit(3);
+                    }
+                    exit(0);
   }
+   if( !fork() )
+    {
+       read(fd[0],chars,SIZE-1);
+             for(int i=0; strlen(chars)>i; i++)
+            {
+                      chars[i] = toupper(chars[i]);
+            }
+             printf("%s\n",chars);
+  }
+        if(-1 == close(fd[0]))
+        {
+                perror("close");
+                exit(4);
+        }
   return 0;
 }
+
+
