@@ -39,6 +39,8 @@ void diff(std::vector<double>* difference, std::vector<double> newX, std::vector
 
 int main() {
     int n;
+    int Num;
+    Num = atoi(argv[1]);
     double count = 0;
     double E = 0.1;
     std::vector<std::vector<double> > a;
@@ -77,10 +79,13 @@ int main() {
    	 }
    	 //std::cout << std::endl;
     }
-
+  MPI_Init(0, 0);
+  int rank, size;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
     while (true) {
    	 swapString(&newX, &oldX);
-   	 for (int i = 0; i < oldX.size(); i++) {
+   	 for (int i = rank; i < oldX.size(); i++) {
 
    		 newX[i] = (oldX[i] - ((funcXn(a[i], oldX, i))*(0.009)));
    		 std::cout << newX[i] << " ";
@@ -96,6 +101,7 @@ int main() {
    	 std::cout << std::endl;
 
     }
+    MPI_Finalize();
     /*for (int i = 0; i < a.size(); i++) {
     for (int j = 0; j <= a.size(); j++) {
     std::cout << a[i][j] << " ";
